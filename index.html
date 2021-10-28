@@ -16,17 +16,19 @@
 <header class="navbar navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Home</a>
+        <span class="me-0 ms-auto mx-2 fw-bold" id="highScore">0</span>
+        <span class="me-0 mx-2 text-success fw-bold" id="score">0</span>
     </div>
 </header>
 
 <div class="main p-4 h-100">
     <div class="card p-4 shadow rounded-3">
-        <h4>Question 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h4>
-        <ul class="ps-0">
-            <li class="btn btn-outline-primary d-flex my-2">Option A. ABC</li>
-            <li class="btn btn-outline-primary d-flex my-2">Option A. ABC</li>
-            <li class="btn btn-outline-primary d-flex my-2">Option A. ABC</li>
-            <li class="btn btn-outline-primary d-flex my-2">Option A. ABC</li>
+        <h4 id="question"></h4>
+        <ul class="ps-0" id="options">
+            <li class="btn btn-outline-primary d-flex my-2" id="optionA"></li>
+            <li class="btn btn-outline-primary d-flex my-2" id="optionB"></li>
+            <li class="btn btn-outline-primary d-flex my-2" id="optionC"></li>
+            <li class="btn btn-outline-primary d-flex my-2" id="optionD"></li>
         </ul>
     </div>
 </div>
@@ -35,8 +37,79 @@
     Copyright - All rights reserved!
 </footer>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
-    alert("Hello world!");
+    let arr = [
+        {
+            'question': 'Which among the following teams has played World Cup (Cricket) final match maximum number of times, but could not win a single trophy?',
+            'options': ['South Africa', 'West Indies', 'Sri Lanka'],
+            'answer': ['England']
+        },
+        {
+            'question': 'The trophy Aga Khan Cup is related to …',
+            'options': ['Badminton', 'Football', 'Basketball'],
+            'answer': ['Hockey']
+        },
+        {
+            'question': 'Which among the following teams has played World Cup (Cricket) final match maximum number of times, but could not win a single trophy?',
+            'options': ['South Africa', 'West Indies', 'Sri Lanka'],
+            'answer': ['England']
+        },
+        {
+            'question': 'The trophy Aga Khan Cup is related to …',
+            'options': ['Badminton', 'Football', 'Basketball'],
+            'answer': ['Hockey']
+        },
+        {
+            'question': 'Which among the following teams has played World Cup (Cricket) final match maximum number of times, but could not win a single trophy?',
+            'options': ['South Africa', 'West Indies', 'Sri Lanka'],
+            'answer': ['England']
+        },
+        {
+            'question': 'The trophy Aga Khan Cup is related to …',
+            'options': ['Badminton', 'Football', 'Basketball'],
+            'answer': ['Hockey']
+        }
+    ];
+
+    let i = 0;
+    let correct;
+
+    if (localStorage.getItem("highScore")) $("#highScore").text(localStorage.getItem("highScore"));
+
+    function nextQuestion() {
+        let options = [arr[i]['options'][0], arr[i]['options'][1], arr[i]['options'][2], arr[i]['answer']];
+        options = options.sort(() => Math.random() - 0.5);
+        $("#question").text(`Question ${i+1}: ${arr[i]['question']}`);
+        $("#optionA").text(options[0]);
+        $("#optionB").text(options[1]);
+        $("#optionC").text(options[2]);
+        $("#optionD").text(options[3]);
+        correct = arr[i]['answer'];
+    }
+
+    nextQuestion();
+
+    $("#options li").on("click", function() {
+        if ($(this).text() == correct) {
+            i = i + 1;
+            $("#score").text(i);
+            nextQuestion();
+        } else {
+            let highScore = localStorage.getItem("highScore");
+            if (highScore) {
+                if (i > highScore) {
+                    localStorage.setItem("highScore", i);
+                }
+            } else {
+                localStorage.setItem("highScore", i);
+            }
+            $("#highScore").text(localStorage.getItem("highScore"));
+            i = 0;
+            nextQuestion();
+            alert("You loose!");
+        }
+    });
 </script>
 </body>
 </html>
