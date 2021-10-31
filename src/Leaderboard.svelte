@@ -1,4 +1,30 @@
 <script>
+import { db } from './firebase.js';
+import { collection, query, getDocs, onSnapshot, orderBy, limit } from "firebase/firestore";
+
+let leaderboard = [];
+
+const q = query(collection(db, "Leaderboard"), orderBy("score", "desc"));
+
+// Code: Realtime Updates
+// onSnapshot(q, (querySnapshot) => {
+//   leaderboard = [];
+//   querySnapshot.forEach((doc) => {
+//     doc = doc.data();
+//     leaderboard.push({'name': doc["name"], 'score': doc["score"]});
+//   });
+//   leaderboard = leaderboard;
+// });
+
+async function fetchLeaderboard() {
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    doc = doc.data();
+    leaderboard.push({'name': doc["name"], 'score': doc["score"]});
+  });
+  leaderboard = leaderboard;
+}
+fetchLeaderboard();
 </script>
 
 <main>
@@ -10,14 +36,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Hannan Satopay</td>
-            <td>100</td>
-          </tr>
-          <tr>
-            <td>Hannan Satopay</td>
-            <td>100</td>
-          </tr>
+          {#each leaderboard as { name, score }}
+            <tr>
+              <td>{name}</td>
+              <td>{score}</td>
+            </tr>
+          {/each}
         </tbody>
     </table>
 </main>

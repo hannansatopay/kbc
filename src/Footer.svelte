@@ -1,4 +1,5 @@
 <script>
+    import './colors.css';
 </script>
 
 <footer class="bg-dark text-white text-center p-4">
@@ -7,7 +8,7 @@
 
 <style>
     footer {
-        background: brown!important;
+        background: var(--dark)!important;
     }
 </style>
 

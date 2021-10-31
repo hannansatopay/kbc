@@ -1,1 +1,3 @@
-footer.svelte-118houk{background:brown!important}
+footer.svelte-2yj728{background:var(--dark)!important}:root {
+    --dark: black;
+}
